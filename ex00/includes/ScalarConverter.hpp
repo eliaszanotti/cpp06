@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/09/18 14:16:48 by elias            ###   ########.fr       */
+/*   Updated: 2023/09/18 14:29:17 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ class ScalarConverter
 		bool	_isChar() const;
 		bool	_isInt() const;
 		bool	_isFloat() const;
+		bool	_isDouble() const;
 
 	public:
 		// Constructors
