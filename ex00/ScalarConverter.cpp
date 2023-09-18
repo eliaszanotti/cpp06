@@ -6,164 +6,125 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/09/18 16:13:12 by elias            ###   ########.fr       */
+/*   Updated: 2023/09/18 17:37:51 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <sstream>
 #include <limits>
+#include <stdlib.h>
+#include <iomanip>
 #include "ScalarConverter.hpp"
 
-// Print
-void ScalarConverter::print(std::string const &str, int color) const
-{
-	std::string colorsString = "";
-	std::string reset = "\e[0m";
-	
-	if (color > 0 && color <= 9)
-	{
-		std::ostringstream oss;
-		oss << "\e[3" << color << "m";
-		colorsString = oss.str();
-	}
-	if (str.empty())
-		std::cout << colorsString << "[ScalarConverter " << this->_string << "] " << reset;
-	else
-		std::cout << colorsString << "[ScalarConverter " << this->_string << "] " << reset << str << std::endl;
-}
-
-// utils
-int ScalarConverter::_ft_stoi() const
-{
-	int number;
-	std::stringstream	ss(this->_string);
-
-	ss >> number;
-    return (number);
-}
-
-float ScalarConverter::_ft_stof() const
-{
-	int number;
-	std::stringstream	ss(this->_string);
-
-	ss >> number;
-    return (number);
-}
-
-double ScalarConverter::_ft_stod() const
-{
-	int number;
-	std::stringstream	ss(this->_string);
-
-	ss >> number;
-    return (number);
-}
-
 // isType
-bool ScalarConverter::_isChar() const
+static bool isChar(std::string const &string)
 {
-	if (this->_string.length() != 1)
+	if (string.length() != 1)
 		return (false);
-	if (this->_string[0] < std::numeric_limits<char>::min() \
-		|| this->_string[0] > std::numeric_limits<char>::max() \
-		|| isdigit(this->_string[0]))
+	if (string[0] < std::numeric_limits<char>::min() \
+		|| string[0] > std::numeric_limits<char>::max() \
+		|| isdigit(string[0]))
 		return (false);
 	return (true);
 }
 
-bool ScalarConverter::_isInt() const
+static bool isInt(std::string const &string)
 {
 	size_t	i = 0;
 
-	if (this->_string[i] == '-')
+	if (string[i] == '-')
 		i++;
-	for (; i < this->_string.length(); i++)	
+	for (; i < string.length(); i++)	
 	{
-		if (!isdigit(this->_string[i]))
+		if (!isdigit(string[i]))
 			return (false);
 	}
 	return (true);
 }
 
-bool ScalarConverter::_isFloat() const
+static bool isFloat(std::string const &string)
 {
 	bool	hasPoint = false;
 
-	if (this->_string == "-inff" || this->_string == "+inff" || this->_string == "nanf")
+	if (string == "-inff" || string == "+inff" || string == "nanf")
 		return (true);
-	if (this->_string[this->_string.length() - 1] != 'f')
+	if (string[string.length() - 1] != 'f')
 		return (false);
-	for (size_t i = 0; i < this->_string.length() - 1; i++)
+	for (size_t i = 0; i < string.length() - 1; i++)
 	{
-		if (this->_string[i] == '.')
+		if (string[i] == '.')
 		{
 			if (hasPoint)
 				return (false);
 			hasPoint = true;
 		}
-		else if (!isdigit(this->_string[i]))
+		else if (!isdigit(string[i]))
 			return (false);
 	}
     return (true);
 }
 
-bool ScalarConverter::_isDouble() const
+static bool isDouble(std::string const &string)
 {
 	bool	hasPoint = false;
 
-	if (this->_string == "-inf" || this->_string == "+inf" || this->_string == "nan")
+	if (string == "-inf" || string == "+inf" || string == "nan")
 		return (true);
-	for (size_t i = 0; i < this->_string.length(); i++)
+	for (size_t i = 0; i < string.length(); i++)
 	{
-		if (this->_string[i] == '.')
+		if (string[i] == '.')
 		{
 			if (hasPoint)
 				return (false);
 			hasPoint = true;
 		}
-		else if (!isdigit(this->_string[i]))
+		else if (!isdigit(string[i]))
 			return (false);
 	}
 	return (true);
 }
 
-bool ScalarConverter::_isSpecialNumber() const
+static bool isSpecialNumber(std::string const &string)
 {
-	if (this->_string == "-inff" || this->_string == "+inff" || this->_string == "nanf" || \
-		this->_string == "-inf" || this->_string == "+inf" || this->_string == "nan")
+	if (string == "-inff" || string == "+inff" || string == "nanf" || \
+		string == "-inf" || string == "+inf" || string == "nan")
 		return (true);
 	return (false);
 }
 
-// Getter	
-type ScalarConverter::_getType() const
+type    getType(std::string const &string)
 {
-	if (this->_isChar())
+	if (isChar(string))
 		return (_char);
-	if (this->_isInt())
+	if (isInt(string))
 		return (_int);
-	if (this->_isFloat())
+	if (isFloat(string))
 		return (_float);
-	if (this->_isDouble())
+	if (isDouble(string))
 		return (_double);
 	return (_error);
 }
 
 // toType
-void ScalarConverter::_toChar() const
+void toChar(char c)
 {
-	char c = this->_string[0];
-
 	std::cout << "char: '" << c << "'" << std::endl;
 	std::cout << "int: " << static_cast<int>(c) << std::endl;
 	std::cout << "float: " << static_cast<float>(c) << ".0f" << std::endl;
 	std::cout << "double: " << static_cast<double>(c) << ".0" << std::endl;
 }
 
-void ScalarConverter::_toInt(int number) const
+void toInt(std::string const &string, int number)
 {
+	std::ostringstream	convert;
+
+	convert << number;
+	if (convert.str() != string)
+	{
+		std::cout << "\e[31m[ERROR]\e[0m Overflow" << std::endl;
+		return ;
+	}
 	if (isprint(number))
 		std::cout << "char: '" << static_cast<char>(number) << "'" << std::endl;
 	else	
@@ -173,8 +134,16 @@ void ScalarConverter::_toInt(int number) const
 	std::cout << "double: " << static_cast<double>(number) << ".0" << std::endl;
 }
 
-void ScalarConverter::_toFloat(float number) const
+void toFloat(std::string const &string, float number)
 {
+	std::ostringstream	convert;
+
+	convert << std::fixed << std::setprecision(1) << number;
+	if (convert.str() != string)
+	{
+		std::cout << "\e[31m[ERROR]\e[0m Overflow" << std::endl;
+		return ;
+	}
 	if (isprint(number))
 		std::cout << "char: '" << static_cast<char>(number) << "'" << std::endl;
 	else	
@@ -184,8 +153,16 @@ void ScalarConverter::_toFloat(float number) const
 	std::cout << "double: " << static_cast<double>(number) << ".0" << std::endl;
 }
 
-void ScalarConverter::_toDouble(double number) const
+void toDouble(std::string const &string, double number)
 {
+	std::ostringstream	convert;
+
+	convert << std::fixed << std::setprecision(1) << number;
+	if (convert.str() != string)
+	{
+		std::cout << "\e[31m[ERROR]\e[0m Overflow" << std::endl;
+		return ;
+	}
 	if (isprint(number))
 		std::cout << "char: '" << static_cast<char>(number) << "'" << std::endl;
 	else	
@@ -195,91 +172,50 @@ void ScalarConverter::_toDouble(double number) const
 	std::cout << "double: " << number << ".0" << std::endl;
 }
 
-void ScalarConverter::_toSpecialNumber(type currentType) const
+void toSpecialNumber(type currentType, std::string const &string)
 {
 	std::cout << "char: impossible to convert to char" << std::endl;
 	std::cout << "int: impossible to convert to int" << std::endl;
 	if (currentType == _float)
 	{
-		std::cout << "float: " << this->_string << std::endl;
-		std::cout << "double: " << this->_string.substr(0, this->_string.length() - 1) << std::endl;
+		std::cout << "float: " << string << std::endl;
+		std::cout << "double: " << string.substr(0, string.length() - 1) << std::endl;
 	}
 	else if (currentType == _double)
 	{
-		std::cout << "float: " << this->_string << "f" << std::endl;
-		std::cout << "double: " << this->_string << std::endl;
+		std::cout << "float: " << string << "f" << std::endl;
+		std::cout << "double: " << string << std::endl;
 	}
 }
 
-// Constructors
-ScalarConverter::ScalarConverter()
+void	ScalarConverter::convert(std::string const &string)
 {
-	this->_string = "0";
-	this->print("created", 2);
-}
-
-ScalarConverter::ScalarConverter(std::string string)
-{
-	this->_string = string;
-	this->print("created", 2);
-}
-
-ScalarConverter::ScalarConverter(ScalarConverter const &copy)
-{
-	*this = copy;
-	this->print("created by copy", 2);
-}
-
-ScalarConverter::~ScalarConverter()
-{
-	this->print("deleted", 1);
-}
-
-// Operators
-ScalarConverter const	&ScalarConverter::operator=(ScalarConverter const &copy)
-{
-	this->_string = copy.getString();
-	this->print("created by assignment", 2);
-	return (*this);
-}
-
-// Getters and Setters
-std::string ScalarConverter::getString(void) const
-{
-    return (this->_string);
-}
-
-//	Methods
-void ScalarConverter::convert() const
-{
-	this->print("converting...", 3);
-	switch (this->_getType())
+	switch (getType(string))
 	{
 		case (_char):
-			this->_toChar();
+			toChar(string[0]);
 			break;
 
 		case (_int):
-			this->_toInt(this->_ft_stoi());
+			toInt(string, atoi(string.c_str()));
 			break;
 
 		case (_float):
-			if (this->_isSpecialNumber())
-				this->_toSpecialNumber(_float);
+			if (isSpecialNumber(string))
+				toSpecialNumber(_float, string);
 			else
-				this->_toFloat(this->_ft_stof());
+				toFloat(string, atof(string.c_str()));
 			break;
 
 		case (_double):
-			if (this->_isSpecialNumber())
-				this->_toSpecialNumber(_double);
+			if (isSpecialNumber(string))
+				toSpecialNumber(_double, string);
 			else
-				this->_toDouble(this->_ft_stod());
+				toDouble(string, std::strtod(string.c_str(), NULL));
 			break;
 
 		default:
 			std::cout << "\e[31m[ERROR]\e[0m wrong type..." << std::endl;
 			break;
 	}
-	this->print("converted", 3);
 }

@@ -1,24 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   typesUtils.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/18 13:38:26 by elias             #+#    #+#             */
-/*   Updated: 2023/09/18 17:16:58 by elias            ###   ########.fr       */
+/*   Created: 2023/09/18 17:03:34 by elias             #+#    #+#             */
+/*   Updated: 2023/09/18 17:15:23 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ScalarConverter.hpp"
-
-int main(int argc, char **argv)
-{
-    if (argc != 2 || !*argv[0])
-    {
-        std::cout << "\e[31m[ERROR]\e[0m Usage: ./convert <literal>" << std::endl;
-        return (1);
-    }
-    ScalarConverter::convert(argv[1]);
-    return (0);
-}
+#include <iostream>
+#include <limits>
