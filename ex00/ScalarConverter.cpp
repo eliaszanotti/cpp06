@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/09/18 14:30:33 by elias            ###   ########.fr       */
+/*   Updated: 2023/09/18 14:42:45 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ bool ScalarConverter::_isInt() const
 		i++;
 	for (; i < this->_string.length(); i++)	
 	{
-		if (!isdigit(this->_string[i])
+		if (!isdigit(this->_string[i]))
 			return (false);
 	}
 	return (true);
@@ -96,6 +96,14 @@ bool ScalarConverter::_isDouble() const
 			return (false);
 	}
 	return (true);
+}
+
+bool ScalarConverter::_isSpecialNumber() const
+{
+	if (this->_string == "-inff" || this->_string == "+inff" || this->_string == "nanf" || \
+		this->_string == "-inf" || this->_string == "+inf" || this->_string == "nan")
+		return (true);
+	return (false);
 }
 
 // Constructors
