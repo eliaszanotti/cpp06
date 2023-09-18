@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/09/18 15:23:33 by elias            ###   ########.fr       */
+/*   Updated: 2023/09/18 16:07:15 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <iostream>
 
 enum type {
-    _specialNumber,
     _char,
     _int,
     _float,
@@ -30,7 +29,11 @@ class ScalarConverter
 		std::string _string;
 		// Print
 		void	print(std::string const &str, int color) const;
-		//   isType
+		// utils
+		int		_ft_stoi() const;
+		float	_ft_stof() const;
+		double	_ft_stod() const;
+		// isType
 		bool	_isChar() const;
 		bool	_isInt() const;
 		bool	_isFloat() const;
@@ -40,10 +43,10 @@ class ScalarConverter
 		type	_getType() const;
 		// toType
 		void	_toChar() const;
-		void	_toInt() const;
-		void	_toFloat() const;
-		void	_toDouble() const;
-		void	_toSpecialNumber() const;
+		void	_toInt(int number) const;
+		void	_toFloat(float number) const;
+		void	_toDouble(double number) const;
+		void	_toSpecialNumber(type currentType) const;
 
 	public:
 		// Constructors
