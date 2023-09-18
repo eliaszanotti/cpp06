@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/09/18 13:45:35 by elias            ###   ########.fr       */
+/*   Updated: 2023/09/18 14:25:37 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,52 @@ void ScalarConverter::print(std::string const &str, int color) const
 		std::cout << colorsString << "[ScalarConverter " << this->_string << "] " << reset;
 	else
 		std::cout << colorsString << "[ScalarConverter " << this->_string << "] " << reset << str << std::endl;
+}
+
+// Methods
+bool ScalarConverter::_isChar() const
+{
+	if (this->_string.length() != 1)
+		return (false);
+	if (!std::isprint(this->_string[0]))
+		return (false);
+	return (true);
+}
+
+bool ScalarConverter::_isInt() const
+{
+	size_t	i = 0;
+
+	if (this->_string[i] == '-')
+		i++;
+	for (; i < this->_string.length(); i++)	
+	{
+		if (!isdigit(this->_string[i])
+			return (false);
+	}
+	return (true);
+}
+
+bool ScalarConverter::_isFloat() const
+{
+	bool	hasPoint = false;
+
+	if (this->_string == "-inff" || this->_string == "+inff" || this->_string == "nanf")
+		return (true);
+	if (this->_string[this->_string.length() - 1] != 'f')
+		return (false);
+	for (size_t i = 0; i < this->_string.length() - 1; i++)
+	{
+		if (this->_string[i] == '.' && hasPoint)
+		{
+			if (hasPoint)
+				return (false);
+			hasPoint = true;
+		}
+		if (!isdigit(this->_string[i]))
+			return (false);
+	}
+    return (true);
 }
 
 // Constructors

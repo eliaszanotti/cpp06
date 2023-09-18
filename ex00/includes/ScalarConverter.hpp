@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/09/18 13:44:33 by elias            ###   ########.fr       */
+/*   Updated: 2023/09/18 14:16:48 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ class ScalarConverter
 		std::string _string;
 		// Print
 		void	print(std::string const &str, int color) const;
+		// Methods
+		bool	_isChar() const;
+		bool	_isInt() const;
+		bool	_isFloat() const;
 
 	public:
 		// Constructors
