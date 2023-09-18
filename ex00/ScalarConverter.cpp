@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/09/18 14:42:45 by elias            ###   ########.fr       */
+/*   Updated: 2023/09/18 15:23:59 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,29 @@ bool ScalarConverter::_isSpecialNumber() const
 	return (false);
 }
 
+type ScalarConverter::_getType() const
+{
+	if (this->_isChar())
+		return (_char);
+	if (this->_isInt())
+		return (_int);
+	if (this->_isFloat())
+		return (_float);
+	if (this->_isDouble())
+		return (_double);
+	return (_error);
+}
+
+void ScalarConverter::_toChar() const
+{
+	char c = this->_string[0];
+
+	std::cout << "char: '" << c << "'" << std::endl;
+	std::cout << "int: " << static_cast<int>(c) << std::endl;
+	std::cout << "int: " << static_cast<float>(c) << ".0f" << std::endl;
+	std::cout << "int: " << static_cast<double>(c) << ".0" << std::endl;
+}
+
 // Constructors
 ScalarConverter::ScalarConverter()
 {
@@ -147,5 +170,16 @@ std::string ScalarConverter::getString(void) const
 //	Methods
 void ScalarConverter::convert() const
 {
-	this->print("converting", 3);
+	this->print("converting...", 3);
+	switch (this->_getType())
+	{
+		case (_char):
+			this->_toChar();
+			break;
+		
+			
+	}
+
+
+	this->print("converted", 3);
 }

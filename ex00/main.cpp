@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 13:38:26 by elias             #+#    #+#             */
-/*   Updated: 2023/09/18 13:46:25 by elias            ###   ########.fr       */
+/*   Updated: 2023/09/18 15:10:12 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,6 @@ int main(int argc, char **argv)
         std::cout << "\e[31m[ERROR]\e[0m Usage: ./convert <literal>" << std::endl;
         return (1);
     }
+    ScalarConverter(argv[1]).convert();
     return (0);
 }
