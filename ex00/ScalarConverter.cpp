@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/09/18 17:37:51 by elias            ###   ########.fr       */
+/*   Updated: 2023/09/18 18:18:50 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void toInt(std::string const &string, int number)
 		std::cout << "\e[31m[ERROR]\e[0m Overflow" << std::endl;
 		return ;
 	}
-	if (isprint(number))
+	if (number >= 32 && number <= 126)
 		std::cout << "char: '" << static_cast<char>(number) << "'" << std::endl;
 	else	
 		std::cout << "char: non printable char" << std::endl;
