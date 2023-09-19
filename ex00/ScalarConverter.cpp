@@ -159,7 +159,10 @@ void	ScalarConverter::convert(std::string const &string)
 
 		case (_float): {
 			if (isSpecialNumber(string))
+			{
 				toSpecialNumber(_float, string);
+				return ;
+			}
 			else
 			{
 				valueFloat = std::strtof(string.c_str(), NULL);
@@ -175,7 +178,10 @@ void	ScalarConverter::convert(std::string const &string)
 
 		case (_double): {
 			if (isSpecialNumber(string))
+			{
 				toSpecialNumber(_double, string);
+				return ;
+			}
 			else
 			{
 				valueDouble = std::strtod(string.c_str(), NULL);
