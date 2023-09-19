@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/09/18 18:18:50 by elias            ###   ########.fr       */
+/*   Updated: 2023/09/19 16:46:50y elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <limits>
 #include <stdlib.h>
 #include <iomanip>
+#include <cmath>
 #include "ScalarConverter.hpp"
 
 // isType
@@ -46,12 +47,15 @@ static bool isInt(std::string const &string)
 static bool isFloat(std::string const &string)
 {
 	bool	hasPoint = false;
+	size_t	i = 0;
 
+	if (string[i] == '-')
+		i++;
 	if (string == "-inff" || string == "+inff" || string == "nanf")
 		return (true);
 	if (string[string.length() - 1] != 'f')
 		return (false);
-	for (size_t i = 0; i < string.length() - 1; i++)
+	for (; i < string.length() - 1; i++)
 	{
 		if (string[i] == '.')
 		{
@@ -68,10 +72,13 @@ static bool isFloat(std::string const &string)
 static bool isDouble(std::string const &string)
 {
 	bool	hasPoint = false;
+	size_t	i = 0;
 
+	if (string[i] == '-')
+		i++;
 	if (string == "-inf" || string == "+inf" || string == "nan")
 		return (true);
-	for (size_t i = 0; i < string.length(); i++)
+	for (; i < string.length(); i++)
 	{
 		if (string[i] == '.')
 		{
@@ -106,72 +113,6 @@ type    getType(std::string const &string)
 	return (_error);
 }
 
-// toType
-void toChar(char c)
-{
-	std::cout << "char: '" << c << "'" << std::endl;
-	std::cout << "int: " << static_cast<int>(c) << std::endl;
-	std::cout << "float: " << static_cast<float>(c) << ".0f" << std::endl;
-	std::cout << "double: " << static_cast<double>(c) << ".0" << std::endl;
-}
-
-void toInt(std::string const &string, int number)
-{
-	std::ostringstream	convert;
-
-	convert << number;
-	if (convert.str() != string)
-	{
-		std::cout << "\e[31m[ERROR]\e[0m Overflow" << std::endl;
-		return ;
-	}
-	if (number >= 32 && number <= 126)
-		std::cout << "char: '" << static_cast<char>(number) << "'" << std::endl;
-	else	
-		std::cout << "char: non printable char" << std::endl;
-	std::cout << "int: " << number << std::endl;
-	std::cout << "float: " << static_cast<float>(number) << ".0f" << std::endl;
-	std::cout << "double: " << static_cast<double>(number) << ".0" << std::endl;
-}
-
-void toFloat(std::string const &string, float number)
-{
-	std::ostringstream	convert;
-
-	convert << std::fixed << std::setprecision(1) << number;
-	if (convert.str() != string)
-	{
-		std::cout << "\e[31m[ERROR]\e[0m Overflow" << std::endl;
-		return ;
-	}
-	if (isprint(number))
-		std::cout << "char: '" << static_cast<char>(number) << "'" << std::endl;
-	else	
-		std::cout << "char: non printable char" << std::endl;
-	std::cout << "int: " << static_cast<int>(number) << std::endl;
-	std::cout << "float: " << number << ".0f" << std::endl;
-	std::cout << "double: " << static_cast<double>(number) << ".0" << std::endl;
-}
-
-void toDouble(std::string const &string, double number)
-{
-	std::ostringstream	convert;
-
-	convert << std::fixed << std::setprecision(1) << number;
-	if (convert.str() != string)
-	{
-		std::cout << "\e[31m[ERROR]\e[0m Overflow" << std::endl;
-		return ;
-	}
-	if (isprint(number))
-		std::cout << "char: '" << static_cast<char>(number) << "'" << std::endl;
-	else	
-		std::cout << "char: non printable char" << std::endl;
-	std::cout << "int: " << static_cast<int>(number) << std::endl;
-	std::cout << "float: " << static_cast<float>(number) << ".0f" << std::endl;
-	std::cout << "double: " << number << ".0" << std::endl;
-}
-
 void toSpecialNumber(type currentType, std::string const &string)
 {
 	std::cout << "char: impossible to convert to char" << std::endl;
@@ -190,32 +131,88 @@ void toSpecialNumber(type currentType, std::string const &string)
 
 void	ScalarConverter::convert(std::string const &string)
 {
+	char	valueChar;
+	int		valueInt;
+	float	valueFloat;
+	double	valueDouble;
+
 	switch (getType(string))
 	{
-		case (_char):
-			toChar(string[0]);
-			break;
+		case (_char): {
+			valueChar = string[0];
+			valueInt = static_cast<int>(valueChar);
+			valueFloat = static_cast<float>(valueChar);
+			valueDouble = static_cast<double>(valueChar);
+		} break;
 
-		case (_int):
-			toInt(string, atoi(string.c_str()));
-			break;
+		case (_int): {
+			long tmpLong = std::strtol(string.c_str(), NULL, 10);
+			if (tmpLong > std::numeric_limits<int>::max() || tmpLong < std::numeric_limits<int>::min())
+			{
+				std::cout << "\e[31m[ERROR]\e[0m overflow on int..." << std::endl;
+				return ;
+			}
+			valueInt = static_cast<int>(tmpLong);
+			valueFloat = static_cast<float>(valueInt);
+			valueDouble =  static_cast<double>(valueInt);
+		} break;
 
-		case (_float):
+		case (_float): {
 			if (isSpecialNumber(string))
 				toSpecialNumber(_float, string);
 			else
-				toFloat(string, atof(string.c_str()));
-			break;
+			{
+				valueFloat = std::strtof(string.c_str(), NULL);
+				if (valueFloat == HUGE_VALF)
+				{
+					std::cout << "\e[31m[ERROR]\e[0m overflow on float..." << std::endl;
+					return ;
+				}
+				valueInt = static_cast<int>(valueFloat);
+				valueDouble = static_cast<double>(valueFloat);
+			}
+		} break;
 
-		case (_double):
+		case (_double): {
 			if (isSpecialNumber(string))
 				toSpecialNumber(_double, string);
 			else
-				toDouble(string, std::strtod(string.c_str(), NULL));
-			break;
+			{
+				valueDouble = std::strtod(string.c_str(), NULL);
+				if (valueDouble == HUGE_VAL)
+				{
+					std::cout << "\e[31m[ERROR]\e[0m overflow on double..." << std::endl;
+					return ;
+				}
+				valueInt = static_cast<int>(valueDouble);
+				valueFloat = static_cast<float>(valueDouble);
+			}
+		} break;
 
-		default:
+		default: {
 			std::cout << "\e[31m[ERROR]\e[0m wrong type..." << std::endl;
-			break;
+			return ;
+		} break;
 	}
+	if (valueInt >= 32 && valueInt <= 126)
+		std::cout << "char  : '" << static_cast<char>(valueInt) << "'" << std::endl;
+	else
+		std::cout << "char  : Non displayable char" << std::endl;
+	if (valueFloat > std::numeric_limits<int>::max() || valueFloat < std::numeric_limits<int>::min())
+		std::cout << "int   : overflow" << std::endl;
+	else 
+		std::cout << "int   : " << valueInt << std::endl;
+	if (valueFloat == HUGE_VALF)
+		std::cout << "float : overflow" << std::endl;
+	else 
+	{
+		if (valueFloat - valueInt == 0)
+			std::cout << "float : " << valueFloat << ".0f" << std::endl;
+		else
+			std::cout << "float : " << valueFloat << "f" << std::endl;
+	}
+	if (valueDouble - valueInt == 0)
+		std::cout << "double: " << valueDouble << ".0" << std::endl;
+	else
+		std::cout << "double: " << valueDouble << std::endl;
 }

@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 13:34:13 by elias             #+#    #+#             */
-/*   Updated: 2023/09/18 17:22:45 by elias            ###   ########.fr       */
+/*   Updated: 2023/09/19 16:37:46 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,5 @@ class ScalarConverter
 	public:
 		static void	convert(std::string const &string);
 };
-
-type    getType(std::string &string);
 
 #endif
