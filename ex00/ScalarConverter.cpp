@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include <iostream>
-#include <sstream>
 #include <limits>
 #include <stdlib.h>
 #include <iomanip>
