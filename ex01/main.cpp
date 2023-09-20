@@ -6,7 +6,7 @@
 /*   By: elias <elias@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:18:33 by elias             #+#    #+#             */
-/*   Updated: 2023/09/20 14:15:24 by elias            ###   ########.fr       */
+/*   Updated: 2023/09/20 14:18:17 by elias            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int main()
     if (&firstData == newData)
     {
         std::cout << "\e[33m[firstData]\e[0m " << &firstData << " | int: " << firstData.dataInt << std::endl;
-        std::cout << "\e[33m[newData  ]\e[0m " << newData << " | int: " << newData->dataInt << std::endl;
+        std::cout << "\e[33m[newData]\e[0m   " << newData << " | int: " << newData->dataInt << std::endl;
     }
     else
         std::cout << "\e[31m[ERROR]\e[0m Failed to serialize" << std::endl;
